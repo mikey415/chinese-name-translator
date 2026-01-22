@@ -8,7 +8,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: config.frontendUrl,
+  origin: config.frontendUrl.split(',').map(url => url.trim()),
   credentials: true,
 }));
 app.use(express.json({ limit: '10kb' }));
