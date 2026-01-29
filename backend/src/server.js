@@ -55,8 +55,7 @@ const limiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   skip: (req) => req.method === 'OPTIONS', // Skip rate limiting for preflight
-  // Store in memory for simplicity (use Redis for production)
-  store: new rateLimit.MemoryStore(),
+  // Uses default memory store
 });
 
 // Apply rate limiting to all requests
