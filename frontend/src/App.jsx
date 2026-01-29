@@ -2,6 +2,19 @@ import React, { useState, useRef, useEffect } from 'react';
 import { translationAPI } from './api/client';
 import './App.css';
 
+// Throttle function to prevent rapid API calls
+function throttle(func, delay) {
+  let lastCall = 0;
+  return function(...args) {
+    const now = Date.now();
+    if (now - lastCall < delay) {
+      return;
+    }
+    lastCall = now;
+    return func(...args);
+  };
+}
+
 function App() {
   const [sessionId, setSessionId] = useState(null);
   const [chineseName, setChineseName] = useState('');
@@ -12,6 +25,7 @@ function App() {
   const [showPromptEditor, setShowPromptEditor] = useState(false);
   const [currentPrompt, setCurrentPrompt] = useState('');
   const [promptLoading, setPromptLoading] = useState(false);
+  const [estimatedCost, setEstimatedCost] = useState(0);
   const messagesEndRef = useRef(null);
 
   // Load prompt on mount
@@ -40,13 +54,17 @@ function App() {
       return;
     }
 
+    if (loading) return; // Prevent multiple simultaneous requests
+
     setLoading(true);
     setError('');
     setMessages([]);
+    setEstimatedCost(0);
 
     try {
       const result = await translationAPI.startSession(chineseName.trim());
       setSessionId(result.sessionId);
+      setEstimatedCost(parseFloat(result.estimatedCost) || 0);
 
       // Add initial response to messages
       setMessages([
@@ -65,7 +83,7 @@ function App() {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!inputMessage.trim() || !sessionId) return;
+    if (!inputMessage.trim() || !sessionId || loading) return;
 
     const userMsg = inputMessage.trim();
     setInputMessage('');
@@ -83,6 +101,7 @@ function App() {
       ]);
 
       const result = await translationAPI.continueSession(sessionId, userMsg);
+      setEstimatedCost(parseFloat(result.estimatedCost) || estimatedCost);
 
       setMessages((prev) => [
         ...prev,
@@ -255,7 +274,12 @@ function App() {
             // Chat Interface
             <div className="chat-container">
               <div className="chat-header">
-                <h2>正在翻译： {messages[0]?.sessionId ? '📝' : ''} {chineseName}</h2>
+                <div>
+                  <h2>正在翻译： {messages[0]?.sessionId ? '📝' : ''} {chineseName}</h2>
+                  {estimatedCost > 0 && (
+                    <p className="cost-info">估计成本: ${estimatedCost.toFixed(4)} USD</p>
+                  )}
+                </div>
                 <button onClick={handleResetSession} className="reset-button">
                   🔄 新的翻译
                 </button>

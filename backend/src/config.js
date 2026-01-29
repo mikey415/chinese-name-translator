@@ -16,6 +16,21 @@ export const config = {
   sessionTimeoutMinutes: parseInt(process.env.SESSION_TIMEOUT_MINUTES || '30'),
   maxConversationTurns: parseInt(process.env.MAX_CONVERSATION_TURNS || '20'),
 
+  // Rate Limiting Configuration
+  rateLimit: {
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    maxRequests: parseInt(process.env.RATE_LIMIT_MAX || '30'), // 30 requests per window
+    maxSessionMessages: parseInt(process.env.MAX_SESSION_MESSAGES || '10'), // 10 messages per session
+  },
+
+  // Token Cost Configuration (estimate for gpt-4o-mini)
+  tokenCost: {
+    inputTokenPrice: 0.00015, // per 1K tokens
+    outputTokenPrice: 0.0006, // per 1K tokens
+    maxTokensPerSession: parseInt(process.env.MAX_TOKENS_PER_SESSION || '5000'), // ~$0.75
+    costThresholdUSD: parseFloat(process.env.COST_THRESHOLD_USD || '1.0'), // Stop at $1 per session
+  },
+
   // Default Prompt Template
   defaultPrompt: `你是一位精通中英文取名文化的专家，深入理解中英文命名习惯。
 

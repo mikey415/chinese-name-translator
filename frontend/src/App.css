@@ -248,6 +248,25 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.chat-header > div {
+  flex: 1;
+}
+
+.chat-header h2 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+}
+
+.cost-info {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid var(--border-color);

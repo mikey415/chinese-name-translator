@@ -8,6 +8,19 @@ const openai = new OpenAI({
 // Store conversation sessions in memory (can be replaced with database)
 const conversationSessions = new Map();
 
+// Utility function to estimate tokens
+function estimateTokens(text) {
+  // Rough estimate: 1 token ≈ 4 characters
+  return Math.ceil(text.length / 4);
+}
+
+// Utility function to calculate cost
+function calculateCost(inputTokens, outputTokens) {
+  const inputCost = (inputTokens / 1000) * config.tokenCost.inputTokenPrice;
+  const outputCost = (outputTokens / 1000) * config.tokenCost.outputTokenPrice;
+  return inputCost + outputCost;
+}
+
 export class LLMService {
   /**
    * Start a new naming session for a Chinese name
@@ -42,13 +55,21 @@ export class LLMService {
           { role: 'assistant', content: assistantMessage },
         ],
         turnCount: 1,
+        totalTokensUsed: estimateTokens(finalPrompt) + estimateTokens(assistantMessage),
+        totalCost: calculateCost(
+          estimateTokens(finalPrompt),
+          estimateTokens(assistantMessage)
+        ),
       });
 
       // Parse and return the response
       const parsedResponse = this._parseResponse(assistantMessage);
+      const session = conversationSessions.get(sessionId);
       return {
         sessionId,
         chineseName,
+        tokensUsed: session.totalTokensUsed,
+        estimatedCost: session.totalCost.toFixed(6),
         ...parsedResponse,
       };
     } catch (error) {
@@ -71,6 +92,21 @@ export class LLMService {
       throw new Error('Maximum conversation turns reached. Please start a new session.');
     }
 
+    // Check session message count
+    if (session.messages.length / 2 >= config.rateLimit.maxSessionMessages) {
+      throw new Error(`消息数量已达到限制 (最多 ${config.rateLimit.maxSessionMessages} 条消息)。请开始新的翻译。`);
+    }
+
+    // Estimate cost before making the request
+    const estimatedInputTokens = estimateTokens(userMessage);
+    const estimatedOutputTokens = 300; // Average response size
+    const estimatedAddCost = calculateCost(estimatedInputTokens, estimatedOutputTokens);
+    const totalEstimatedCost = session.totalCost + estimatedAddCost;
+
+    if (totalEstimatedCost > config.tokenCost.costThresholdUSD) {
+      throw new Error(`成本即将超过限制。当前成本: $${session.totalCost.toFixed(4)}，请开始新的翻译。`);
+    }
+
     // Add user message to history
     session.messages.push({
       role: 'user',
@@ -87,12 +123,19 @@ export class LLMService {
 
       const assistantMessage = response.choices[0].message.content;
 
+      // Calculate actual token usage from response
+      const inputTokensUsed = response.usage?.prompt_tokens || estimatedInputTokens;
+      const outputTokensUsed = response.usage?.completion_tokens || estimateTokens(assistantMessage);
+      const costAdded = calculateCost(inputTokensUsed, outputTokensUsed);
+
       // Update session history
       session.messages.push({
         role: 'assistant',
         content: assistantMessage,
       });
       session.turnCount += 1;
+      session.totalTokensUsed += inputTokensUsed + outputTokensUsed;
+      session.totalCost += costAdded;
       session.lastActivityAt = Date.now();
 
       // Parse the response to extract structured data
@@ -101,6 +144,8 @@ export class LLMService {
       return {
         sessionId,
         chineseName: session.chineseName,
+        tokensUsed: session.totalTokensUsed,
+        estimatedCost: session.totalCost.toFixed(6),
         ...parsedResponse,
       };
     } catch (error) {

@@ -1,10 +1,37 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import { config } from './config.js';
 import apiRoutes from './routes/api.js';
 import { LLMService } from './services/llmService.js';
 
 const app = express();
+
+// Security middleware
+app.use(helmet());
+
+// Rate limiting middleware
+const limiter = rateLimit({
+  windowMs: config.rateLimit.windowMs,
+  max: config.rateLimit.maxRequests,
+  message: '请求过于频繁，请稍后再试',
+  standardHeaders: true,
+  legacyHeaders: false,
+  // Store in memory for simplicity (use Redis for production)
+  store: new rateLimit.MemoryStore(),
+});
+
+// Apply rate limiting to all requests
+app.use(limiter);
+
+// Stricter rate limit for POST endpoints
+const apiLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 10, // 10 requests per minute
+  message: 'API 请求过于频繁，请稍后再试',
+  skip: (req) => req.method !== 'POST', // Only apply to POST
+});
 
 // Middleware
 app.use(cors({
@@ -19,7 +46,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
+// Routes with stricter rate limiting
+app.use('/api/sessions', apiLimiter);
 app.use('/api', apiRoutes);
 
 // 404 handler
