@@ -95,10 +95,13 @@ export class LLMService {
       session.turnCount += 1;
       session.lastActivityAt = Date.now();
 
+      // Parse the response to extract structured data
+      const parsedResponse = this._parseResponse(assistantMessage);
+      
       return {
         sessionId,
         chineseName: session.chineseName,
-        response: assistantMessage,
+        ...parsedResponse,
       };
     } catch (error) {
       // Remove the user message if API call failed

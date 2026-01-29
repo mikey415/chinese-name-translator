@@ -88,7 +88,7 @@ function App() {
         ...prev,
         {
           role: 'assistant',
-          content: result.response,
+          content: result,
           timestamp: new Date(),
         },
       ]);
