@@ -34,10 +34,27 @@ const apiLimiter = rateLimit({
 });
 
 // Middleware
-app.use(cors({
-  origin: config.frontendUrl.split(',').map(url => url.trim()),
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests from configured frontend URLs
+    const allowedOrigins = config.frontendUrl.split(',').map(url => url.trim());
+    
+    // In development or if origin is not present, allow it
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      // Log blocked origin for debugging
+      console.warn(`CORS blocked origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
-}));
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '10kb' }));
 
 // Request logging middleware
