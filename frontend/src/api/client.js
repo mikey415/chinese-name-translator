@@ -25,7 +25,7 @@ async function getApiUrl() {
 
   if (isChina) {
     // Mainland China: use Alibaba Cloud backend
-    return 'https://your-domain.cn/api'; // TODO: Replace with your Alibaba domain
+    return 'https://172.17.9.217:5000/api'; // TODO: Replace with your Alibaba domain
   } else {
     // International: use Railway/Vercel backend
     return 'https://chinese-name-translator-production.up.railway.app/api';
