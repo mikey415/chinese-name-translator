@@ -17,7 +17,7 @@ function throttle(func, delay) {
 
 function App() {
   const [sessionId, setSessionId] = useState(null);
-  const [chineseName, setChineseName] = useState('');
+  const [inputName, setInputName] = useState('');
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -47,10 +47,17 @@ function App() {
     }
   };
 
+  const getUserLocale = () => {
+    if (navigator.languages && navigator.languages.length > 0) {
+      return navigator.languages[0];
+    }
+    return navigator.language || 'en';
+  };
+
   const handleStartSession = async (e) => {
     e.preventDefault();
-    if (!chineseName.trim()) {
-      setError('请输入中文名字');
+    if (!inputName.trim()) {
+      setError('Please enter your name');
       return;
     }
 
@@ -62,7 +69,8 @@ function App() {
     setEstimatedCost(0);
 
     try {
-      const result = await translationAPI.startSession(chineseName.trim());
+      const locale = getUserLocale();
+      const result = await translationAPI.startSession(inputName.trim(), locale);
       setSessionId(result.sessionId);
       setEstimatedCost(parseFloat(result.estimatedCost) || 0);
 
@@ -75,7 +83,7 @@ function App() {
         },
       ]);
     } catch (err) {
-      setError(err.response?.data?.message || err.message || '翻译失败，请重试');
+      setError(err.response?.data?.message || err.message || 'Failed to generate a Chinese name. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -112,7 +120,7 @@ function App() {
         },
       ]);
     } catch (err) {
-      setError(err.response?.data?.message || err.message || '发送失败，请重试');
+      setError(err.response?.data?.message || err.message || 'Failed to send. Please try again.');
       // Remove the user message if there was an error
       setMessages((prev) => prev.slice(0, -1));
     } finally {
@@ -125,7 +133,7 @@ function App() {
       translationAPI.clearSession(sessionId).catch(console.error);
     }
     setSessionId(null);
-    setChineseName('');
+    setInputName('');
     setMessages([]);
     setInputMessage('');
     setError('');
@@ -133,7 +141,7 @@ function App() {
 
   const handleSavePrompt = async () => {
     if (!currentPrompt.trim()) {
-      setError('提示词不能为空');
+      setError('Prompt cannot be empty');
       return;
     }
 
@@ -143,7 +151,7 @@ function App() {
       setShowPromptEditor(false);
       setError('');
     } catch (err) {
-      setError('保存提示词失败: ' + (err.response?.data?.message || err.message));
+      setError('Failed to save prompt: ' + (err.response?.data?.message || err.message));
     } finally {
       setPromptLoading(false);
     }
@@ -158,7 +166,7 @@ function App() {
       return (
         <div className="translation-result">
           <div className="primary-result">
-            <h3>推荐英文名：</h3>
+            <h3>Recommended Chinese Name:</h3>
             <div className="name-box">
               <div className="name">{content.primary.name}</div>
               <div className="explanation">{content.primary.explanation}</div>
@@ -167,7 +175,7 @@ function App() {
 
           {content.alternatives && content.alternatives.length > 0 && (
             <div className="alternatives">
-              <h3>其他建议：</h3>
+              <h3>Other Suggestions:</h3>
               <div className="alternatives-grid">
                 {content.alternatives.map((alt, idx) => (
                   <div key={idx} className="alt-name-box">
@@ -190,8 +198,8 @@ function App() {
       {/* Header */}
       <header className="header">
         <div className="header-content">
-          <h1>🌏 中文名字转英文名</h1>
-          <p>使用 AI 技术将您的中文名字转换为合适的英文名</p>
+          <h1>🌏 Get Your Chinese Name</h1>
+          <p>Generate a culturally appropriate Chinese name based on your language and name</p>
         </div>
       </header>
 
@@ -199,21 +207,21 @@ function App() {
         {/* Sidebar - Prompt Editor */}
         <aside className="sidebar">
           <div className="sidebar-content">
-            <h3>设置</h3>
+            <h3>Settings</h3>
             <button
               className="prompt-button"
               onClick={() => setShowPromptEditor(!showPromptEditor)}
             >
-              {showPromptEditor ? '✕ 关闭编辑' : '⚙️ 编辑提示词'}
+              {showPromptEditor ? '✕ Close Editor' : '⚙️ Edit Prompt'}
             </button>
 
             {showPromptEditor && (
               <div className="prompt-editor">
-                <h4>自定义 AI 提示词</h4>
+                <h4>Custom AI Prompt</h4>
                 <textarea
                   value={currentPrompt}
                   onChange={(e) => setCurrentPrompt(e.target.value)}
-                  placeholder="在此输入自定义提示词..."
+                  placeholder="Enter a custom prompt here..."
                   rows={12}
                   className="prompt-textarea"
                 />
@@ -222,7 +230,7 @@ function App() {
                   disabled={promptLoading}
                   className="save-button"
                 >
-                  {promptLoading ? '保存中...' : '保存提示词'}
+                  {promptLoading ? 'Saving...' : 'Save Prompt'}
                 </button>
               </div>
             )}
@@ -236,13 +244,13 @@ function App() {
             <div className="form-container">
               <form onSubmit={handleStartSession}>
                 <div className="form-group">
-                  <label htmlFor="chineseName">请输入您的中文名字：</label>
+                  <label htmlFor="inputName">Enter your name:</label>
                   <input
-                    id="chineseName"
+                    id="inputName"
                     type="text"
-                    value={chineseName}
-                    onChange={(e) => setChineseName(e.target.value)}
-                    placeholder="例如：王小明"
+                    value={inputName}
+                    onChange={(e) => setInputName(e.target.value)}
+                    placeholder="e.g., Michael Johnson"
                     disabled={loading}
                     autoFocus
                     className="input-field"
@@ -256,17 +264,17 @@ function App() {
                   disabled={loading}
                   className="submit-button"
                 >
-                  {loading ? '⏳ 处理中...' : '🚀 生成英文名'}
+                  {loading ? '⏳ Generating...' : '🚀 Generate Chinese Name'}
                 </button>
               </form>
 
               <div className="info-box">
-                <h3>如何使用：</h3>
+                <h3>How it works:</h3>
                 <ol>
-                  <li>输入您的中文名字</li>
-                  <li>AI 会为您生成合适的英文名建议</li>
-                  <li>您可以提出后续问题来优化建议</li>
-                  <li>开始新的翻译来转换其他名字</li>
+                  <li>Enter your name in your preferred language</li>
+                  <li>AI generates Chinese name suggestions</li>
+                  <li>Ask follow-up questions to refine the result</li>
+                  <li>Start a new session for another name</li>
                 </ol>
               </div>
             </div>
@@ -275,13 +283,13 @@ function App() {
             <div className="chat-container">
               <div className="chat-header">
                 <div>
-                  <h2>正在翻译： {messages[0]?.sessionId ? '📝' : ''} {chineseName}</h2>
+                  <h2>Generating for: {messages[0]?.sessionId ? '📝' : ''} {inputName}</h2>
                   {estimatedCost > 0 && (
-                    <p className="cost-info">估计成本: ${estimatedCost.toFixed(4)} USD</p>
+                    <p className="cost-info">Estimated cost: ${estimatedCost.toFixed(4)} USD</p>
                   )}
                 </div>
                 <button onClick={handleResetSession} className="reset-button">
-                  🔄 新的翻译
+                  🔄 New Session
                 </button>
               </div>
 
@@ -300,7 +308,7 @@ function App() {
                 {loading && (
                   <div className="message message-assistant">
                     <div className="message-content">
-                      <div className="loading-spinner">⏳ 正在处理您的请求...</div>
+                      <div className="loading-spinner">⏳ Processing your request...</div>
                     </div>
                   </div>
                 )}
@@ -314,7 +322,7 @@ function App() {
                   <textarea
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
-                    placeholder="要求更多名字、简短名字、女性名字等..."
+                    placeholder="Ask for more names, a shorter name, a feminine name, etc..."
                     disabled={loading}
                     rows={2}
                     onKeyDown={(e) => {
@@ -329,10 +337,10 @@ function App() {
                     disabled={loading || !inputMessage.trim()}
                     className="send-button"
                   >
-                    {loading ? '⏳' : '📤'} 发送
+                    {loading ? '⏳' : '📤'} Send
                   </button>
                 </div>
-                <small>提示：按 Ctrl+Enter 快速发送</small>
+                <small>Tip: Press Ctrl+Enter to send quickly</small>
               </form>
             </div>
           )}
@@ -342,7 +350,7 @@ function App() {
       {/* Footer */}
       <footer className="footer">
         <p>
-          由 OpenAI GPT 驱动 | 使用 React + Node.js 构建 | 易于部署和维护
+          Powered by OpenAI | Built with React + Node.js | Easy to deploy and maintain
         </p>
       </footer>
     </div>

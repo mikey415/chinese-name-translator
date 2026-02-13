@@ -17,38 +17,39 @@ router.get('/health', (req, res) => {
 /**
  * Start a new naming session
  * POST /api/sessions
- * Body: { chineseName: string, customPrompt?: string }
+ * Body: { inputName: string, locale?: string, customPrompt?: string }
  */
 router.post('/sessions', async (req, res) => {
   try {
-    const { chineseName, customPrompt } = req.body;
+    const { inputName, locale, customPrompt } = req.body;
 
     // Validation
-    if (!chineseName || typeof chineseName !== 'string') {
+    if (!inputName || typeof inputName !== 'string') {
       return res.status(400).json({
         error: 'Invalid input',
-        message: 'chineseName is required and must be a string',
+        message: 'inputName is required and must be a string',
       });
     }
 
-    if (chineseName.trim().length === 0) {
+    if (inputName.trim().length === 0) {
       return res.status(400).json({
         error: 'Invalid input',
-        message: 'chineseName cannot be empty',
+        message: 'inputName cannot be empty',
       });
     }
 
-    if (chineseName.length > 50) {
+    if (inputName.length > 50) {
       return res.status(400).json({
         error: 'Invalid input',
-        message: 'chineseName is too long (max 50 characters)',
+        message: 'inputName is too long (max 50 characters)',
       });
     }
 
     const sessionId = uuidv4();
     const result = await LLMService.startSession(
       sessionId,
-      chineseName.trim(),
+      inputName.trim(),
+      locale,
       customPrompt
     );
 
@@ -133,7 +134,8 @@ router.get('/sessions/:sessionId', (req, res) => {
       success: true,
       data: {
         sessionId,
-        chineseName: session.chineseName,
+        inputName: session.inputName,
+        locale: session.locale || 'en',
         createdAt: session.createdAt,
         turnCount: session.turnCount,
         messageCount: session.messages.length,

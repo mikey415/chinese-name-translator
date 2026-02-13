@@ -25,9 +25,11 @@ export class LLMService {
   /**
    * Start a new naming session for a Chinese name
    */
-  static async startSession(sessionId, chineseName, customPrompt = null) {
+  static async startSession(sessionId, inputName, locale = 'en', customPrompt = null) {
     const prompt = customPrompt || config.defaultPrompt;
-    const finalPrompt = prompt.replace('{chineseName}', chineseName);
+    const finalPrompt = prompt
+      .replace('{inputName}', inputName)
+      .replace('{locale}', locale || 'en');
 
     const messages = [
       {
@@ -49,7 +51,8 @@ export class LLMService {
       // Store conversation history
       conversationSessions.set(sessionId, {
         createdAt: Date.now(),
-        chineseName: chineseName,
+        inputName: inputName,
+        locale: locale || 'en',
         messages: [
           { role: 'user', content: finalPrompt },
           { role: 'assistant', content: assistantMessage },
@@ -67,13 +70,14 @@ export class LLMService {
       const session = conversationSessions.get(sessionId);
       return {
         sessionId,
-        chineseName,
+        inputName,
+        locale: locale || 'en',
         tokensUsed: session.totalTokensUsed,
         estimatedCost: session.totalCost.toFixed(6),
         ...parsedResponse,
       };
     } catch (error) {
-      throw new Error(`Failed to generate English names: ${error.message}`);
+      throw new Error(`Failed to generate Chinese names: ${error.message}`);
     }
   }
 
@@ -143,7 +147,8 @@ export class LLMService {
       
       return {
         sessionId,
-        chineseName: session.chineseName,
+        inputName: session.inputName,
+        locale: session.locale || 'en',
         tokensUsed: session.totalTokensUsed,
         estimatedCost: session.totalCost.toFixed(6),
         ...parsedResponse,

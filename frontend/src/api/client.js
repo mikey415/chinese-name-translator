@@ -48,10 +48,11 @@ export const translationAPI = {
   /**
    * Start a new naming session
    */
-  startSession: async (chineseName, customPrompt = null) => {
+  startSession: async (inputName, locale, customPrompt = null) => {
     await baseUrlPromise;
     const response = await apiClient.post('/sessions', {
-      chineseName,
+      inputName,
+      locale,
       customPrompt,
     });
     return response.data.data;
