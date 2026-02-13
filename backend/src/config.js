@@ -40,63 +40,63 @@ The user's provided name is: "{inputName}"
 The user's default language/region is: "{locale}"
 
 CRITICAL INSTRUCTIONS:
-Create SHORT, PHONETICALLY SIMILAR Chinese transliterations that sound like the original name.
+Create SHORT Chinese names with REAL CHINESE SURNAMES that sound similar to the original name.
 
 REQUIREMENTS:
-1. LENGTH: Must be 2-3 Chinese characters TOTAL (including both surname and given name if applicable)
-   - For single names: 2-3 characters
-   - For full names: Use 2-3 characters total (e.g., 1 char surname + 1-2 char given name)
+1. STRUCTURE: Must have a proper Chinese name structure
+   - Use an ACTUAL Chinese surname: 李(Li), 王(Wang), 张(Zhang), 刘(Liu), 陈(Chen), 杨(Yang), 黄(Huang), 赵(Zhao), 吴(Wu), 周(Zhou), 徐(Xu), 孙(Sun), 马(Ma), 朱(Zhu), 胡(Hu), 郭(Guo), 何(He), 高(Gao), 林(Lin), 罗(Luo)
+   - Surname: 1 character
+   - Given name: 1-2 characters that phonetically match the original name
+   - Total: 2-3 characters
 
-2. SOUND SIMILARITY (HIGHEST PRIORITY): 
-   - Match the pronunciation of the original name as closely as possible
-   - Break down the name into syllables and find Chinese characters with matching sounds
-   - The pinyin should sound very similar to the original pronunciation
-   
-3. NATURAL CHARACTER SELECTION:
-   - Use characters commonly seen in transliterations (e.g., 杰-jie, 克-ke, 尔-er, 文-wen, 丽-li, 莎-sha, 斯-si, 特-te, 森-sen, 逊-xun)
-   - Prefer characters with positive or neutral meanings
-   - Avoid awkward combinations
+2. SURNAME SELECTION:
+   - If the original name's first sound matches a common surname, use it (e.g., "Li-" → 李Li, "Wang" → 王Wang)
+   - Otherwise, pick a common surname that sounds close or natural
+   - Common surnames are preferred
+
+3. GIVEN NAME (SOUND SIMILARITY):
+   - Match the pronunciation of the original name (or key syllables)
+   - Use transliteration characters: 杰(jie), 克(ke), 尔(er), 文(wen), 丽(li), 莎(sha), 斯(si), 特(te), 森(sen), 逊(xun), 伦(lun), 米(mi), 卡(ka), 娜(na), 拉(la), 维(wei), 德(de), 安(an), 伯(bo), 瑞(rui), etc.
 
 4. COMPACTNESS:
-   - Condense the name intelligently - don't try to match every syllable
+   - Keep it short and memorable
    - Focus on the most distinctive sounds
-   - Make it memorable and pronounceable
 
 EXAMPLES (FOLLOW THIS STYLE):
-- "Michael Jackson" → 麦杰逊 (Mài Jié Xùn) - 3 chars, sounds like Mi-chael Jack-son
-- "David" → 大卫 (Dà Wèi) - 2 chars, sounds like Da-vid
-- "Sarah" → 莎拉 (Shā Lā) - 2 chars, sounds like Sa-rah
-- "Emma Stone" → 艾玛 (Ài Mǎ) - 2 chars, sounds like Em-ma
-- "Kevin" → 凯文 (Kǎi Wén) - 2 chars, sounds like Ke-vin
-- "Lisa" → 丽莎 (Lì Shā) - 2 chars, sounds like Li-sa
-- "Tom" → 汤姆 (Tāng Mǔ) - 2 chars, sounds like Tom
+- "Michael Jackson" → 麦杰逊 (Mài Jié Xùn) or 李杰逊 (Lǐ Jié Xùn) - real surname + phonetic match
+- "David Smith" → 王大卫 (Wáng Dà Wèi) or 戴维 (Dài Wéi) - with real surname
+- "Sarah" → 莎拉 (Shā Lā) or 李莎拉 (Lǐ Shā Lā) - can work as given name or add surname
+- "Kevin" → 凯文 (Kǎi Wén) or 李凯文 (Lǐ Kǎi Wén) - with real surname
+- "Lisa Brown" → 李莎 (Lǐ Shā) or 丽莎 (Lì Shā) - natural transliteration
+- "Tom Wilson" → 汤姆 (Tāng Mǔ) - surname sounds like Tom
+- "Amy" → 王艾米 (Wáng Ài Mǐ) or 艾米 (Ài Mǐ)
 
 WHAT TO DO:
-- Create compact 2-3 character transliterations
-- Match the sound/phonetics closely
-- Use established transliteration characters
-- Make it flow naturally in Chinese
+- Always include a real Chinese surname when creating full names
+- Match the sound/phonetics of the original name in the given name portion
+- Keep it 2-3 characters total
+- Make it natural and pronounceable
 
 WHAT NOT TO DO:
 - DO NOT create 4+ character names
-- DO NOT ignore the original pronunciation
-- DO NOT use traditional Chinese surnames like 李, 王, 张 unless they phonetically match
-- DO NOT create meaning-based names that sound completely different
+- DO NOT make up fake surnames
+- DO NOT ignore phonetic similarity
+- DO NOT make overly complex transliterations
 
 Return valid JSON in the following format only:
 {
   "primary": {
-    "name": "2-3 Character Chinese Name",
-    "explanation": "Pinyin (pronunciation) and brief note on how it matches the original sound"
+    "name": "2-3 Character Chinese Name with Real Surname",
+    "explanation": "Pinyin (pronunciation) and brief note on the surname choice and how the given name matches the original sound"
   },
   "alternatives": [
     {
       "name": "2-3 Character Chinese Name",
-      "explanation": "Pinyin and sound matching explanation"
+      "explanation": "Pinyin and explanation of surname and sound matching"
     },
     {
       "name": "2-3 Character Chinese Name",
-      "explanation": "Pinyin and sound matching explanation"
+      "explanation": "Pinyin and explanation of surname and sound matching"
     }
   ]
 }
