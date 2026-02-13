@@ -40,63 +40,77 @@ The user's provided name is: "{inputName}"
 The user's default language/region is: "{locale}"
 
 CRITICAL INSTRUCTIONS:
-Create SHORT Chinese names with REAL CHINESE SURNAMES that sound similar to the original name.
+Create SHORT Chinese names where BOTH the surname AND given name phonetically match the original name.
 
 REQUIREMENTS:
 1. STRUCTURE: Must have a proper Chinese name structure
-   - Use an ACTUAL Chinese surname: 李(Li), 王(Wang), 张(Zhang), 刘(Liu), 陈(Chen), 杨(Yang), 黄(Huang), 赵(Zhao), 吴(Wu), 周(Zhou), 徐(Xu), 孙(Sun), 马(Ma), 朱(Zhu), 胡(Hu), 郭(Guo), 何(He), 高(Gao), 林(Lin), 罗(Luo)
-   - Surname: 1 character
-   - Given name: 1-2 characters that phonetically match the original name
+   - Surname: 1 character (from actual Chinese surnames)
+   - Given name: 1-2 characters
    - Total: 2-3 characters
 
-2. SURNAME SELECTION:
-   - If the original name's first sound matches a common surname, use it (e.g., "Li-" → 李Li, "Wang" → 王Wang)
-   - Otherwise, pick a common surname that sounds close or natural
-   - Common surnames are preferred
+2. SURNAME SELECTION (PHONETIC MATCHING PRIORITY):
+   - The surname MUST match the sound of the first syllable(s) of the original name
+   - Use these phonetically-matched Chinese surnames:
+     * Li/Lee sounds → 李(Lǐ), 黎(Lí)
+     * Ma/Mo sounds → 马(Mǎ), 莫(Mò)
+     * Wang/Wong sounds → 王(Wáng)
+     * Zhang/Zha sounds → 张(Zhāng)
+     * Chen/Chan sounds → 陈(Chén)
+     * Liu/Lu sounds → 刘(Liú), 卢(Lú)
+     * Wu sounds → 吴(Wú)
+     * Zhou/Jo sounds → 周(Zhōu)
+     * Xu/Shu sounds → 徐(Xú)
+     * Sun sounds → 孙(Sūn)
+     * Gao/Go sounds → 高(Gāo)
+     * Lin sounds → 林(Lín)
+     * He/Ho sounds → 何(Hé)
+     * Luo/Lo/Ro sounds → 罗(Luó)
+     * Mai/Mi sounds → 麦(Mài)
+     * Tang/Tom sounds → 汤(Tāng)
+     * Dai/Da sounds → 戴(Dài)
+   - If no surname matches well, use a surname that sounds close to the beginning of the name
 
 3. GIVEN NAME (SOUND SIMILARITY):
-   - Match the pronunciation of the original name (or key syllables)
-   - Use transliteration characters: 杰(jie), 克(ke), 尔(er), 文(wen), 丽(li), 莎(sha), 斯(si), 特(te), 森(sen), 逊(xun), 伦(lun), 米(mi), 卡(ka), 娜(na), 拉(la), 维(wei), 德(de), 安(an), 伯(bo), 瑞(rui), etc.
-
-4. COMPACTNESS:
-   - Keep it short and memorable
-   - Focus on the most distinctive sounds
+   - Match the remaining pronunciation of the original name
+   - Use transliteration characters: 杰(jié), 克(kè), 尔(ěr), 文(wén), 丽(lì), 莎(shā), 斯(sī), 特(tè), 森(sēn), 逊(xùn), 伦(lún), 米(mǐ), 卡(kǎ), 娜(nà), 拉(lā), 维(wéi), 德(dé), 安(ān), 伯(bó), 瑞(ruì), 凯(kǎi), 艾(ài), 玛(mǎ), 娅(yà)
 
 EXAMPLES (FOLLOW THIS STYLE):
-- "Michael Jackson" → 麦杰逊 (Mài Jié Xùn) or 李杰逊 (Lǐ Jié Xùn) - real surname + phonetic match
-- "David Smith" → 王大卫 (Wáng Dà Wèi) or 戴维 (Dài Wéi) - with real surname
-- "Sarah" → 莎拉 (Shā Lā) or 李莎拉 (Lǐ Shā Lā) - can work as given name or add surname
-- "Kevin" → 凯文 (Kǎi Wén) or 李凯文 (Lǐ Kǎi Wén) - with real surname
-- "Lisa Brown" → 李莎 (Lǐ Shā) or 丽莎 (Lì Shā) - natural transliteration
-- "Tom Wilson" → 汤姆 (Tāng Mǔ) - surname sounds like Tom
-- "Amy" → 王艾米 (Wáng Ài Mǐ) or 艾米 (Ài Mǐ)
+- "Michael" → 麦克尔 (Mài Kè Ěr) - "Mai" matches "Mi-", "ke-er" matches "-chael"
+- "Jackson" → 杰克逊 (Jié Kè Xùn) - given name only, or 周克逊 (Zhōu Kè Xùn) if full structure
+- "David" → 戴维 (Dài Wéi) - "Dai" matches "Da-", "wei" matches "-vid"
+- "Lisa" → 丽莎 (Lì Shā) - "Li" matches "Li-", "sha" matches "-sa"
+- "Sarah" → 莎拉 (Shā Lā) - surname omitted since no good match, or add 孙莎拉 (Sūn Shā Lā)
+- "Kevin" → 凯文 (Kǎi Wén) - sounds like "Ke-vin"
+- "Tom" → 汤姆 (Tāng Mǔ) - "Tang" matches "Tom"
+- "Monica" → 莫妮卡 (Mò Nī Kǎ) - "Mo" matches "Mo-"
+- "William" → 威廉 (Wēi Lián) - surname omitted, or 吴廉 (Wú Lián)
 
 WHAT TO DO:
-- Always include a real Chinese surname when creating full names
-- Match the sound/phonetics of the original name in the given name portion
+- Match surname sound to the FIRST syllable(s) of the original name
+- Match given name sound to the REMAINING syllables
 - Keep it 2-3 characters total
 - Make it natural and pronounceable
 
 WHAT NOT TO DO:
+- DO NOT pick random surnames unrelated to the sound
 - DO NOT create 4+ character names
-- DO NOT make up fake surnames
-- DO NOT ignore phonetic similarity
+- DO NOT ignore phonetic similarity in the surname
 - DO NOT make overly complex transliterations
 
 Return valid JSON in the following format only:
 {
   "primary": {
-    "name": "2-3 Character Chinese Name with Real Surname",
-    "explanation": "Pinyin (pronunciation) and brief note on the surname choice and how the given name matches the original sound"
+    "name": "2-3 Character Chinese Name",
+    "explanation": "Pinyin and explanation of how BOTH surname and given name match the original sound"
   },
   "alternatives": [
     {
       "name": "2-3 Character Chinese Name",
-      "explanation": "Pinyin and explanation of surname and sound matching"
+      "explanation": "Pinyin and sound matching explanation"
     },
     {
       "name": "2-3 Character Chinese Name",
-      "explanation": "Pinyin and explanation of surname and sound matching"
+      "explanation": "Pinyin and sound matching explanation"
     }
   ]
 }
