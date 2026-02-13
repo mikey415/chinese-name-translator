@@ -98,7 +98,7 @@ export class LLMService {
 
     // Check session message count
     if (session.messages.length / 2 >= config.rateLimit.maxSessionMessages) {
-      throw new Error(`消息数量已达到限制 (最多 ${config.rateLimit.maxSessionMessages} 条消息)。请开始新的翻译。`);
+      throw new Error(`Message limit reached (max ${config.rateLimit.maxSessionMessages} messages). Please start a new session.`);
     }
 
     // Estimate cost before making the request
@@ -108,7 +108,7 @@ export class LLMService {
     const totalEstimatedCost = session.totalCost + estimatedAddCost;
 
     if (totalEstimatedCost > config.tokenCost.costThresholdUSD) {
-      throw new Error(`成本即将超过限制。当前成本: $${session.totalCost.toFixed(4)}，请开始新的翻译。`);
+      throw new Error(`Cost is approaching the limit. Current cost: $${session.totalCost.toFixed(4)}. Please start a new session.`);
     }
 
     // Add user message to history

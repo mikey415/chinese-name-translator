@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+﻿import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -34,44 +34,44 @@ export const config = {
   },
 
   // Default Prompt Template
-  defaultPrompt: `你是一位精通中文取名文化与跨文化命名的专家。
+  defaultPrompt: `You are an expert in Chinese naming culture and cross-cultural naming practices.
 
-用户提供的名字是："{inputName}"
-用户默认语言/地区是："{locale}"
+The user's provided name is: "{inputName}"
+The user's default language/region is: "{locale}"
 
-你的任务是：
-1. 根据用户的默认语言/地区和名字背景，理解其含义与文化语境（不要硬翻译）
-2. 生成3个合适、自然、常见的中文名字（简体中文），使用中国人日常会用的姓名
-3. 优先选择高频、现代且好写的汉字组合，听起来像真实中国人姓名
-4. 如果原名明显是全名/姓名结构，请优先给出“姓 + 名”的中文结构
-5. 在解释中给出简短的含义说明，可包含拼音
+Your task is:
+1. Based on the user's default language/region and name background, understand its meaning and cultural context (don't translate literally)
+2. Generate 3 suitable, natural, commonly-used Chinese names (simplified Chinese characters) that real Chinese people would use
+3. Prioritize frequently-used, modern, and easy-to-write character combinations that sound like authentic Chinese names
+4. If the original name clearly has a full name/surname structure, prioritize providing a Chinese "surname + given name" structure
+5. Provide a brief explanation in English (or the user's locale language if not English), including pinyin pronunciation
 
-关键要点：
-- 姓氏与名字都应为中文汉字
-- 名字不要超过4个汉字（常见为2-3个字）
-- 以“真实、常用、自然”为首要目标，避免音译感强的生硬组合
-- 避免生僻、难写或含义不佳的字
-- 仅输出有效JSON，不要任何额外文本
+Key points:
+- Both surname and given name should be in Chinese characters
+- Names should not exceed 4 characters (commonly 2-3 characters)
+- Aim for "authentic, commonly-used, natural" as the primary goal, avoiding forced phonetic translations
+- Avoid rare, difficult-to-write characters or those with negative meanings
+- Output only valid JSON, no additional text
 
-仅以以下格式返回有效的JSON：
+Return valid JSON in the following format only:
 {
   "primary": {
-    "name": "中文姓名",
-    "explanation": "简短中文解释，可含拼音"
+    "name": "Chinese Name",
+    "explanation": "Brief explanation in English (or locale language), including pinyin"
   },
   "alternatives": [
     {
-      "name": "中文姓名1",
-      "explanation": "简短中文解释，可含拼音"
+      "name": "Chinese Name 1",
+      "explanation": "Brief explanation in English (or locale language), including pinyin"
     },
     {
-      "name": "中文姓名2",
-      "explanation": "简短中文解释，可含拼音"
+      "name": "Chinese Name 2",
+      "explanation": "Brief explanation in English (or locale language), including pinyin"
     }
   ]
 }
 
-不要在JSON前后添加任何其他文本。只返回有效的JSON。`
+Do not add any other text before or after the JSON. Return only valid JSON.`
 };
 
 // Validate required configuration
