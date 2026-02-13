@@ -39,39 +39,50 @@ export const config = {
 The user's provided name is: "{inputName}"
 The user's default language/region is: "{locale}"
 
-Your task is:
-1. Based on the user's default language/region and name background, understand its meaning and cultural context (don't translate literally)
-2. Generate 3 suitable, natural, commonly-used Chinese names (simplified Chinese characters) that real Chinese people would use
-3. Prioritize frequently-used, modern, and easy-to-write character combinations that sound like authentic Chinese names
-4. If the original name clearly has a full name/surname structure, prioritize providing a Chinese "surname + given name" structure
-5. Provide a brief explanation in English (or the user's locale language if not English), including pinyin pronunciation
+CRITICAL INSTRUCTIONS:
+Your task is to create AUTHENTIC CHINESE NAMES that sound natural to native Chinese speakers - NOT phonetic translations or transliterations of the original name.
 
-Key points:
-- Both surname and given name should be in Chinese characters
-- Names should not exceed 4 characters (commonly 2-3 characters)
-- Aim for "authentic, commonly-used, natural" as the primary goal, avoiding forced phonetic translations
-- Avoid rare, difficult-to-write characters or those with negative meanings
-- Output only valid JSON, no additional text
+Approach:
+1. Understand the MEANING, PERSONALITY, or CULTURAL SIGNIFICANCE of the original name (not just the sound)
+2. Choose a common Chinese surname (e.g., 李, 王, 张, 刘, 陈, 杨, 黄, 赵, 吴, 周)
+3. Create a given name using characters with POSITIVE MEANINGS and good cultural connotations
+4. The name should sound like it belongs to a real Chinese person, not like a foreign name converted to Chinese
+
+What to DO:
+- Use popular, modern Chinese character combinations
+- Choose characters with beautiful meanings (e.g., 美-beauty, 文-cultured, 雅-elegant, 俊-handsome, 浩-vast, 婷-graceful)
+- Make it sound harmonious and natural when pronounced
+- Use common naming patterns Chinese parents actually use
+- If the original name has a clear meaning (like "Grace", "Victor"), incorporate that meaning with appropriate Chinese characters
+
+What NOT to do:
+- DO NOT create phonetic translations (e.g., "Michael" → "迈克尔")
+- DO NOT try to match the sound of the original name
+- DO NOT use uncommon or archaic characters
+- DO NOT create names that sound foreign or unnatural
+
+Examples of GOOD Chinese names: 李雅文, 王俊杰, 张美玲, 刘浩然, 陈思婷
+Examples of BAD names (avoid these): 迈克尔, 约翰逊, 玛丽亚
 
 Return valid JSON in the following format only:
 {
   "primary": {
     "name": "Chinese Name",
-    "explanation": "Brief explanation in English (or locale language), including pinyin"
+    "explanation": "Brief explanation in English including: the pinyin, meaning of each character, and why this name was chosen"
   },
   "alternatives": [
     {
       "name": "Chinese Name 1",
-      "explanation": "Brief explanation in English (or locale language), including pinyin"
+      "explanation": "Brief explanation in English including pinyin and meaning"
     },
     {
       "name": "Chinese Name 2",
-      "explanation": "Brief explanation in English (or locale language), including pinyin"
+      "explanation": "Brief explanation in English including pinyin and meaning"
     }
   ]
 }
 
-Do not add any other text before or after the JSON. Return only valid JSON.`
+Output ONLY valid JSON, no other text.`
 };
 
 // Validate required configuration
