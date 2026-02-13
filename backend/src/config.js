@@ -40,44 +40,56 @@ The user's provided name is: "{inputName}"
 The user's default language/region is: "{locale}"
 
 CRITICAL INSTRUCTIONS:
-Your task is to create AUTHENTIC CHINESE NAMES that sound natural to native Chinese speakers - NOT phonetic translations or transliterations of the original name.
+Your PRIMARY task is to create Chinese names that SOUND SIMILAR to the original name while still being authentic and natural-sounding to Chinese speakers.
 
-Approach:
-1. Understand the MEANING, PERSONALITY, or CULTURAL SIGNIFICANCE of the original name (not just the sound)
-2. Choose a common Chinese surname (e.g., 李, 王, 张, 刘, 陈, 杨, 黄, 赵, 吴, 周)
-3. Create a given name using characters with POSITIVE MEANINGS and good cultural connotations
-4. The name should sound like it belongs to a real Chinese person, not like a foreign name converted to Chinese
+Approach (in priority order):
+1. SOUND SIMILARITY (HIGHEST PRIORITY): Match the pronunciation/phonetics of the original name using natural Chinese characters
+   - Break down the original name into syllables and find Chinese characters with similar sounds
+   - Use pinyin that closely matches the original pronunciation
+   - For surnames, try to match the first syllable if possible, or use a common Chinese surname that sounds similar
+   
+2. NATURALNESS: The name must still sound like a real Chinese person's name
+   - Use characters that are commonly used in Chinese names
+   - Avoid awkward or unnatural character combinations
+   - The pronunciation should flow naturally in Chinese
+   
+3. MEANING (BONUS): If possible, choose characters that also have positive meanings
+   - Among phonetically similar options, prefer characters with good meanings
+   - But NEVER sacrifice sound similarity for meaning
+
+Examples:
+- "Sarah" → 莎拉 (Shā lā) - matches sound closely, natural
+- "David" → 大卫 (Dà wèi) - matches sound, established name
+- "Emma" → 艾玛 (Ài mǎ) - phonetically similar, natural
+- "Kevin" → 凯文 (Kǎi wén) - sounds similar, uses positive characters
+- "Grace" → 格蕾丝 (Gé lěi sī) - maintains sound, natural feel
 
 What to DO:
-- Use popular, modern Chinese character combinations
-- Choose characters with beautiful meanings (e.g., 美-beauty, 文-cultured, 雅-elegant, 俊-handsome, 浩-vast, 婷-graceful)
-- Make it sound harmonious and natural when pronounced
-- Use common naming patterns Chinese parents actually use
-- If the original name has a clear meaning (like "Grace", "Victor"), incorporate that meaning with appropriate Chinese characters
+- Focus on matching the SOUND/PRONUNCIATION first
+- Use standard transliteration characters when appropriate (e.g., 文-wen, 尔-er, 克-ke, 斯-si)
+- Choose character combinations that Chinese people actually use
+- Ensure the pinyin pronunciation closely resembles the original name
 
 What NOT to do:
-- DO NOT create phonetic translations (e.g., "Michael" → "迈克尔")
-- DO NOT try to match the sound of the original name
-- DO NOT use uncommon or archaic characters
-- DO NOT create names that sound foreign or unnatural
-
-Examples of GOOD Chinese names: 李雅文, 王俊杰, 张美玲, 刘浩然, 陈思婷
-Examples of BAD names (avoid these): 迈克尔, 约翰逊, 玛丽亚
+- DO NOT ignore the sound of the original name
+- DO NOT create completely different-sounding names just for meaning
+- DO NOT use characters that make unnatural combinations
+- DO NOT use rare or archaic characters
 
 Return valid JSON in the following format only:
 {
   "primary": {
     "name": "Chinese Name",
-    "explanation": "Brief explanation in English including: the pinyin, meaning of each character, and why this name was chosen"
+    "explanation": "Brief explanation in English including: the pinyin, how it sounds similar to the original name, meaning of characters"
   },
   "alternatives": [
     {
       "name": "Chinese Name 1",
-      "explanation": "Brief explanation in English including pinyin and meaning"
+      "explanation": "Brief explanation in English including pinyin, sound similarity, and meaning"
     },
     {
       "name": "Chinese Name 2",
-      "explanation": "Brief explanation in English including pinyin and meaning"
+      "explanation": "Brief explanation in English including pinyin, sound similarity, and meaning"
     }
   ]
 }
