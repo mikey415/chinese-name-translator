@@ -25,7 +25,6 @@ function App() {
   const [showPromptEditor, setShowPromptEditor] = useState(false);
   const [currentPrompt, setCurrentPrompt] = useState('');
   const [promptLoading, setPromptLoading] = useState(false);
-  const [estimatedCost, setEstimatedCost] = useState(0);
   const messagesEndRef = useRef(null);
 
   // Load prompt on mount
@@ -66,13 +65,11 @@ function App() {
     setLoading(true);
     setError('');
     setMessages([]);
-    setEstimatedCost(0);
 
     try {
       const locale = getUserLocale();
       const result = await translationAPI.startSession(inputName.trim(), locale);
       setSessionId(result.sessionId);
-      setEstimatedCost(parseFloat(result.estimatedCost) || 0);
 
       // Add initial response to messages
       setMessages([
@@ -109,7 +106,6 @@ function App() {
       ]);
 
       const result = await translationAPI.continueSession(sessionId, userMsg);
-      setEstimatedCost(parseFloat(result.estimatedCost) || estimatedCost);
 
       setMessages((prev) => [
         ...prev,
@@ -284,9 +280,6 @@ function App() {
               <div className="chat-header">
                 <div>
                   <h2>Generating for: {messages[0]?.sessionId ? '📝' : ''} {inputName}</h2>
-                  {estimatedCost > 0 && (
-                    <p className="cost-info">Estimated cost: ${estimatedCost.toFixed(4)} USD</p>
-                  )}
                 </div>
                 <button onClick={handleResetSession} className="reset-button">
                   🔄 New Session
